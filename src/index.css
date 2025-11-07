@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeSlideDown {
+  animation: fadeSlideDown cubic-bezier(0.25, 0.46, 0.45, 0.94) 10s ease forwards;
+}
+/*ECOMMERCE SCROLLBAR*/
+.scrollbar-hide::-webkit-scrollbar-track {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*HEADER STYLE*/
+/* --- Refined Luxury Dropdown --- */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  width: 70%; /* centered container width */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: none;
+  padding: 2rem 3rem;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+}
+
+/* Show dropdown on hover */
+.nav-item:hover .nav-dropdown {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Grid layout inside dropdown */
+.nav-dropdown-content {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2rem;
+  text-align: left;
+}
+
+/* Dropdown links */
+.nav-dropdown-content a {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: #111;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-dropdown-content a:hover {
+  color: #c40000; /* Red accent for hover */
+}
+
+/* Add subtle divider line */
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+
+nav .group button {
+  position: relative;
+
+}
+
+nav .group button::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: #fff;
+  transition: width 0.3s ease;
+}
+
+nav .group:hover button::after {
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
