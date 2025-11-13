@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import clip from "../assets/clip.mp4";
 
-const Hero = () => {
+const Hero = ({ openShop }) => {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
       <video
@@ -35,12 +35,12 @@ const Hero = () => {
         </p>
 
         <motion.div whileHover={{ scale: 1.05 }} className="mt-10 inline-block">
-          <a
-            href="#"
-            className="border border-white text-white px-8 py-3 text-sm sm:text-base tracking-wide uppercase hover:bg-white hover:text-black transition-all duration-300 font-medium"
+          <button
+            onClick={openShop}
+            className="border border-white text-white px-8 py-3 text-sm sm:text-base tracking-wide uppercase hover:bg-white hover:text-black transition-all duration-300 font-medium rounded"
           >
             Shop Now
-          </a>
+          </button>
         </motion.div>
       </motion.div>
     </section>
@@ -48,4 +48,3 @@ const Hero = () => {
 };
 
 export default Hero;
-  
