@@ -111,70 +111,152 @@ function App() {
 
       <Hero openShop={() => setShopOpen(true)} />
 
-   
-      {shopOpen && (
-        <div
-          className="fixed inset-0 z-50 flex bg-black/60 overflow-auto"
-          onClick={() => setShopOpen(false)}
-        >
-          {/* Left Sidebar Filter */}
-          <div
-            className="w-80 bg-white p-6 text-black min-h-screen"
-            onClick={(e) => e.stopPropagation()}
+   {shopOpen && (
+  <div
+    className="fixed inset-0 z-50 flex bg-black/50"
+    onClick={() => setShopOpen(false)}
+  >
+    {/* SIDEBAR NAV LIKE IMAGE */}
+    <div
+      className="w-[320px] md:w-[360px] bg-white h-full shadow-2xl overflow-y-auto animate-slideIn"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* SEARCH BAR */}
+      <div className="p-4 border-b">
+        <div className="flex items-center border rounded-full px-3 py-2">
+          <input
+            type="text"
+            placeholder="Search"
+            className="flex-1 outline-none text-sm"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-5 h-5 text-gray-500"
           >
-            <h2 className="text-2xl font-bold mb-6">Filters</h2>
-            <div className="space-y-6">
-              <div>
-                <label className="font-semibold block mb-2">Category</label>
-                <select
-                  className="w-full border rounded px-3 py-2"
-                  value={filters.category}
-                  onChange={(e) =>
-                    setFilters((prev) => ({ ...prev, category: e.target.value }))
-                  }
-                >
-                  <option>All</option>
-                  <option>Men</option>
-                  <option>Women</option>
-                  <option>Accessories</option>
-                </select>
-              </div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 3a7.5 7.5 0 006.15 12.65z"
+            />
+          </svg>
+        </div>
+      </div>
 
-              <div>
-                <label className="font-semibold block mb-2">Price</label>
-                <select
-                  className="w-full border rounded px-3 py-2"
-                  value={filters.price}
-                  onChange={(e) =>
-                    setFilters((prev) => ({ ...prev, price: e.target.value }))
-                  }
-                >
-                  <option>All</option>
-                  <option>Under $50</option>
-                  <option>$50 - $100</option>
-                  <option>Over $100</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Product Grid */}
-          <div
-            className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-h-screen bg-gray-50"
-            onClick={(e) => e.stopPropagation()}
+      {/* MEN / WOMEN TABS */}
+      <div className="flex border-b text-sm">
+        {["Men", "Women"].map((cat) => (
+          <button
+            key={cat}
+            className={`flex-1 py-3 text-center ${
+              filters.category === cat
+                ? "font-semibold border-b-2 border-black"
+                : "text-gray-500 bg-gray-200"
+            }`}
+            onClick={() =>
+              setFilters((prev) => ({ ...prev, category: cat }))
+            }
           >
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <Ecommerce key={product.id} addToCart={() => addToCart(product)} />
-              ))
-            ) : (
-              <p className="text-black text-lg col-span-full text-center mt-10">
-                No products match your filters.
-              </p>
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* CATEGORY LIST */}
+      <div className="p-4 space-y-4 text-sm">
+        <button className="block text-left">New Arrivals</button>
+        <button className="block text-left text-red-500">Sale</button>
+
+        <button className="block text-left items-center gap-1">
+          Holiday Gift Sets 🎁
+        </button>
+
+        <button className="block text-left">Essentials</button>
+        <button className="block text-left">Dress Code</button>
+        <button className="block text-left">Denim</button>
+
+        <button className="block text-left  items-center gap-1">
+          Crew 🧸
+        </button>
+
+        {/* DROPDOWNS */}
+        {[
+          "Shop by Collection",
+          "Tops",
+          "Bottoms",
+          "Innerwear",
+          "Footwear",
+          "Accessories",
+          "Personal Care",
+        ].map((title, index) => (
+          <div key={index}>
+            <button
+              className="w-full flex justify-between items-center"
+              onClick={() =>
+                setActiveDropdown(
+                  activeDropdown === title ? null : title
+                )
+              }
+            >
+              {title}
+              <span className="text-lg">
+                {activeDropdown === title ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {activeDropdown === title && (
+              <div className="pl-4 mt-2 space-y-2 text-gray-600">
+                <p>Item 1</p>
+                <p>Item 2</p>
+                <p>Item 3</p>
+              </div>
             )}
           </div>
-        </div>
+        ))}
+
+        <button className="block text-left">All Items</button>
+      </div>
+
+      {/* FOOTER LINKS */}
+      <div className="border-t mt-6 p-4 space-y-3 text-sm text-gray-700">
+        
+        <p>Buy Online, Pick-up in Store</p>
+        <p>JThriftShop</p>
+        <p>Return Exchange</p>
+      </div>
+
+      {/* SOCIAL ICONS */}
+      <div className="p-4 flex gap-5 text-xl">
+        <i className="fa-brands fa-instagram"></i>
+        <i className="fa-brands fa-facebook"></i>
+        <i className="fa-brands fa-x-twitter"></i>
+        <i className="fa-brands fa-tiktok"></i>
+      </div>
+    </div>
+
+    {/* PRODUCT GRID */}
+    <div
+      className="flex-1 bg-gray-50 px-6 py-8 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {filteredProducts.length > 0 ? (
+        filteredProducts.map((product) => (
+          <Ecommerce
+            key={product.id}
+            addToCart={() => addToCart(product)}
+          />
+        ))
+      ) : (
+        <p className="text-gray-700 text-lg col-span-full text-center mt-10">
+          No products match your filters.
+        </p>
       )}
+    </div>
+  </div>
+)}
       {/* Default Ecommerce (main page) */}
       <Ecommerce
         addToCart={addToCart}

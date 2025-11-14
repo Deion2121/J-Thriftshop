@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import chbot from "../assets/chbot.png";
-import chacce from "../assets/chacce.png";
+import chhood from "../assets/chhood.png";
+import s from "../assets/s.png";
+import nb from  "../assets/nb.png";
 
 const Ecommerce = ({ addToCart, selectedCategory }) => {
   const [addedMessage, setAddedMessage] = useState(null);
@@ -14,7 +15,7 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
       color: "Black Trouser",
       category: "MEN",
       price: 135,
-      img: chbot,
+      img: chhood,
     },
     {
       id: 2,
@@ -23,7 +24,7 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
       color: "Gray",
       category: "WOMEN",
       price: 55,
-      img: chacce,
+      img: s,
     },
     {
       id: 3,
@@ -32,7 +33,7 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
       color: "Charcoal",
       category: "MEN",
       price: 35,
-      img: "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
+      img: nb,
     },
     {
       id: 4,
@@ -73,50 +74,44 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
       </AnimatePresence>
 
       {/* 🛍 Product Cards */}
-      <div className="flex flex-wrap justify-center gap-10">
-        {filteredProducts.map((product) => (
-          <motion.div
-            key={product.id}
-            whileHover={{ y: -8, scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-            className="w-full sm:w-[90%] md:w-[70%] lg:w-[45%] bg-gray-900 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
-          >
-            <div className="flex flex-col md:flex-row">
-              {/* 🖼 Product Image */}
-              <div className="md:w-1/2">
-                <img
-                  src={product.img}
-                  alt={product.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* 📄 Product Info */}
-              <div className="md:w-1/2 p-8 flex flex-col justify-center">
-                <h2 className="text-3xl text-white font-bold mb-2">
-                  {product.title}
-                </h2>
-                <p className="text-white mb-3">{product.desc}</p>
-                <p className="text-white mb-2">
-                  Color:{" "}
-                  <span className="font-semibold text-white">
-                    {product.color}
-                  </span>
-                </p>
-                <p className="text-2xl text-white font-bold mb-6">
-                  ${product.price}
-                </p>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="w-full py-3 bg-black text-white text-lg rounded-xl hover:bg-red-600 transition-all duration-300"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+<div className="flex flex-wrap justify-center gap-1">
+  {filteredProducts.map((product) => (
+    <motion.div
+      key={product.id}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.3 }}
+      className="w-full sm:w-[90%] md:w-[70%] lg:w-[45%] bg-gray-900 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+    >
+      {/* 🖼 Product Image */}
+      <div className="w-full h-96"> {/* Tall image */}
+        <img
+          src={product.img}
+          alt={product.title}
+          className="w-full h-full object-cover"
+        />
       </div>
+
+      
+
+      {/* 📄 Product Info */}
+      <div className="p-4 flex flex-col items-center">
+        <h2 className="text-3xl text-white font-bold mb-2">
+          {product.title}
+        </h2>
+        <p className="text-2xl text-white font-sans-bold mb-4">
+          ${product.price}
+        </p>
+        <button
+          onClick={() => handleAddToCart(product)}
+          className="w-full py-3 bg-black text-white text-lg rounded-xl hover:bg-red-600 transition-all duration-300"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </motion.div>
+  ))}
+</div>
+
 
       {filteredProducts.length === 0 && ( 
         <p className="text-center text-gray-500 mt-10 text-lg">
