@@ -44,6 +44,44 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
       price: 35,
       img: "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
     },
+    {
+      id: 5,
+      title: "Navy Jacket",
+      desc: "Navy blue jacket with a sleek design.",
+      color: "Navy Blue",
+      category: "MEN",
+      price: 120,
+      img: nb,
+    },
+    {
+      id: 6,
+      title: "Navy Jacket",
+      desc: "Navy blue jacket with a sleek design.",
+      color: "Navy Blue",
+      category: "MEN",
+      price: 120,
+      img: nb,
+     } ,
+     {
+      id: 7,
+      title: "Navy Jacket",
+      desc: "Navy blue jacket with a sleek design.",
+      color: "Navy Blue",
+      category: "MEN",
+      price: 120,
+      img: nb,
+    },
+        {
+      id: 8,
+      title: "Navy Jacket",
+      desc: "Navy blue jacket with a sleek design.",
+      color: "Navy Blue",
+      category: "MEN",
+      price: 120,
+      img: nb,
+    },
+  
+   
   ];
 
   // Filter products based on selected category
@@ -73,37 +111,30 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
         )}
       </AnimatePresence>
 
-      {/* 🛍 Product Cards */}
-<div className="flex flex-wrap justify-center gap-1">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   {filteredProducts.map((product) => (
     <motion.div
       key={product.id}
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ duration: 0.3 }}
-      className="w-full sm:w-[90%] md:w-[70%] lg:w-[45%] bg-gray-900 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+      className="border-t-indigo-300 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300"
     >
       {/* 🖼 Product Image */}
-      <div className="w-full h-96"> {/* Tall image */}
+      <div className="w-full">
         <img
           src={product.img}
           alt={product.title}
-          className="w-full h-full object-cover"
+          className="w-full h-56 object-cover"
         />
       </div>
 
-      
-
       {/* 📄 Product Info */}
       <div className="p-4 flex flex-col items-center">
-        <h2 className="text-3xl text-white font-bold mb-2">
-          {product.title}
-        </h2>
-        <p className="text-2xl text-white font-sans-bold mb-4">
-          ${product.price}
-        </p>
+        <h2 className="text-xl font-bold mb-2 text-black">{product.title}</h2>
+        <p className="text-lg font-semibold mb-4 text-indigo-600">${product.price}</p>
         <button
           onClick={() => handleAddToCart(product)}
-          className="w-full py-3 bg-black text-white text-lg rounded-xl hover:bg-red-600 transition-all duration-300"
+          className="w-full py-2 bg-black text-white text-lg rounded-xl hover:bg-red-600 transition-all duration-300"
         >
           Add to Cart
         </button>
@@ -111,14 +142,17 @@ const Ecommerce = ({ addToCart, selectedCategory }) => {
     </motion.div>
   ))}
 </div>
-
-
+<div>
+  
+</div>
+  
       {filteredProducts.length === 0 && ( 
         <p className="text-center text-gray-500 mt-10 text-lg">
           No products found for this category.
         </p>
       )}
     </div>
+    
   );
 };
 
