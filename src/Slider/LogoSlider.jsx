@@ -1,43 +1,55 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
+
 import nike from "../assets/nike-logo.png";
 import nb from "../assets/nb-logo.png";
 import adidas from "../assets/Adidas_logo.png";
 import ch from "../assets/carhartt-logo.png";
+import vans from "../assets/vans.png";
+import champion from "../assets/champion.png";
+import tommy from "../assets/tommy.png";
+import rlpolo from "../assets/rlpolo.png";
 
 const LogoCarousel = () => {
-  const logos = [nike, nb, adidas, ch];
+  const logos = [nike, nb, adidas, ch, vans, champion, tommy, rlpolo];
+
   const carouselRef = useRef(null);
   const controls = useAnimation();
+
   const [width, setWidth] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Calculate width of scrollable content
+  // 🔹 calculate width (half because duplicated)
   useEffect(() => {
     if (carouselRef.current) {
-      const scrollWidth = carouselRef.current.scrollWidth / 2; // duplicated logos
-      setWidth(scrollWidth);
+      setWidth(carouselRef.current.scrollWidth / 4);
+     
     }
   }, []);
 
-  // Animate auto-scroll
-  <motion.div
-  animate={{ x: [-width, 0] }}
-  transition={{
-    x: {
-      repeat: Infinity,
-      repeatType: "loop",
-      ease: "linear",
-      duration: isHovered ? 8 : 15
-    }
-  }}
-  style={{
-    animationPlayState: isHovered ? "paused" : "running"
-    
-  }}
->
-  {/* logo */}
-</motion.div>
+  // 🔹 autoplay infinite loop
+  const startAnimation = () => {
+    controls.start({
+      x: [-width, 0],
+      transition: {
+        x: {
+          repeat: Infinity,
+          repeatType: "loop",
+          ease: "linear",
+          duration: 18,
+        },
+      },
+    });
+  };
+
+  // start once width is ready
+  useEffect(() => {
+    if (width > 1) startAnimation();
+  }, [width]);
+
+ 
+ 
+
   return (
     <div
       className="relative w-full overflow-hidden bg-white py-24 flex justify-center items-center"
@@ -51,11 +63,13 @@ const LogoCarousel = () => {
       {/* Logo track */}
       <motion.div
         ref={carouselRef}
-        className="flex gap-16 cursor-grab items-center"
+        className="flex gap-16 items-center cursor-grab w-max"
         animate={controls}
         drag="x"
         dragConstraints={{ left: -width, right: 0 }}
-        dragElastic={0.1}
+        dragElastic={0.05}
+        onDragStart={() => controls.stop()}
+        onDragEnd={() => startAnimation()}
       >
         {[...logos, ...logos].map((logo, i) => (
           <div
@@ -65,14 +79,12 @@ const LogoCarousel = () => {
             <img
               src={logo}
               alt={`brand-logo-${i}`}
-              className={`
+              className="
                 h-20 sm:h-24 md:h-28 w-auto object-contain
-                grayscale hover:grayscale-0
                 opacity-70 hover:opacity-100
                 transition-all duration-300
-                hover:scale-125
-                hover:drop-shadow-xl
-              `}
+                hover:scale-125 hover:drop-shadow-lg
+              "
             />
           </div>
         ))}

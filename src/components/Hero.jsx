@@ -30,19 +30,16 @@ const Hero = ({ openShop }) => {
           The New Standard of Style
         </motion.h1>
 
-        <p className="mt-5 text-lg sm:text-xl md:text-2xl font-light tracking-wide text-gray-200 max-w-2xl mx-auto">
+        <p className="mt-5 text-md sm:text-xl md:text-2xl font-serif tracking-wide text-gray-200 max-w-3xl mx-auto">
           Discover timeless fashion crafted with elegance and precision.
         </p>
-
-        <motion.div whileHover={{ scale: 1.05 }} className="mt-10 inline-block">
-          <button
-            onClick={openShop}
-            className="border border-white text-white px-8 py-3 text-sm sm:text-base tracking-wide uppercase hover:bg-white hover:text-black transition-all duration-300 font-medium rounded"
-          >
-            Shop Now
-          </button>
+        <button
+          onClick={openShop}
+          className="mt-8 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-500 transition"
+        >
+          Shop Now
+        </button>
         </motion.div>
-      </motion.div>
     </section>
   );
 };
