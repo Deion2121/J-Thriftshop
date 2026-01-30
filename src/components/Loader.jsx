@@ -13,6 +13,7 @@ const Loader = () => {
   if (!loading) return null; 
 
   return (
+   
     <AnimatePresence>
       {loading && (
         <motion.div

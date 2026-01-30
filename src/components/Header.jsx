@@ -8,6 +8,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  Loader,
 } from "lucide-react";
 import logo from "../assets/flogo.png";
 
@@ -51,7 +52,7 @@ const menuData = {
   },
 };
 
-function Header({ cartItems = [], openCartModal, openShop }) {
+function Header({ cartItems = [], openCartModal, openShop, categoryData }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileDropdown, setMobileDropdown] = useState(null);
@@ -111,6 +112,7 @@ function Header({ cartItems = [], openCartModal, openShop }) {
         <div className="absolute w-full grid grid-cols-3 items-center py-6 px-6">
           {/* LOGO */}
           <img src={logo} alt="Logo" className="w-20 invert" />
+          
 
           {/* DESKTOP MENU */}
           <div
@@ -171,31 +173,31 @@ function Header({ cartItems = [], openCartModal, openShop }) {
           {activeDropdown}
         </h3>
 
-        <div className="grid grid-cols-4 gap-10">
-          {Object.entries(menuData[activeDropdown]).map(
-            ([section, items]) => (
-              <div key={section}>
-                <h4 className="uppercase text-gray-400 mb-4">{section}</h4>
+       <div className="grid grid-cols-4 gap-10">
+  {categoryData?.[activeDropdown] &&
+    Object.entries(categoryData[activeDropdown]).map(
+      ([section, items]) => (
+        <div key={section}>
+          <h4 className="uppercase text-gray-400 mb-4">
+            {section}
+          </h4>
 
-                {items.map((sub) => (
-                  <p
-                    key={sub}
-                    className="text-lg py-1 text-gray-300 hover:text-white cursor-pointer transition"
-                    onClick={() => {
-                      if (openShop) {
-                        // ✅ call openShop from props
-                        openShop(activeDropdown, sub); // updates filters + opens sidebar
-                      }
-                      setActiveDropdown(null); // close dropdown
-                    }}
-                  >
-                    {sub}
-                  </p>
-                ))}
-              </div>
-            )
-          )}
+          {items.map((sub) => (
+            <p
+              key={sub}
+              className="cursor-pointer hover:text-white"
+              onClick={() => {
+                openShop(activeDropdown, sub);
+                setActiveDropdown(null);
+              }}
+            >
+              {sub}
+            </p>
+          ))}
         </div>
+      )
+    )}
+</div>
       </div>
     </motion.div>
   )}
