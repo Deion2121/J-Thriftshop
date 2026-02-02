@@ -34,7 +34,7 @@ const Hero = ({ openShop }) => {
           Discover timeless fashion crafted with elegance and precision.
         </p>
         <button
-          onClick={openShop}
+          onClick={() => openShop(null, null)}
           className="mt-8 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-500 transition"
         >
           Shop Now

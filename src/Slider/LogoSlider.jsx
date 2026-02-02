@@ -9,9 +9,15 @@ import vans from "../assets/vans.png";
 import champion from "../assets/champion.png";
 import tommy from "../assets/tommy.png";
 import rlpolo from "../assets/rlpolo.png";
+import converse from "../assets/converse_logo.png";
+import fila from "../assets/fila_logo.png";
+import guess from "../assets/guess_logo.png";
+import hm from "../assets/h&m_logo.png";
+import puma from "../assets/puma_logo.png";
+import reebok from "../assets/reebok_logo.png";
 
 const LogoCarousel = () => {
-  const logos = [nike, nb, adidas, ch, vans, champion, tommy, rlpolo];
+  const logos = [nike, nb, adidas, ch, vans, champion, tommy, rlpolo, converse , fila, guess, hm, puma, reebok];
 
   const carouselRef = useRef(null);
   const controls = useAnimation();
@@ -36,7 +42,7 @@ const LogoCarousel = () => {
           repeat: Infinity,
           repeatType: "loop",
           ease: "linear",
-          duration: 18,
+          duration: 15,
         },
       },
     });

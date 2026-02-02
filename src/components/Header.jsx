@@ -19,14 +19,14 @@ const menuData = {
     Collections: ["Urban Wear", "Sports", "Essentials"],
   },
   Men: {
-    Topwear: ["T-Shirts", "Shirts", "Jackets"],
-    Bottomwear: ["Jeans", "Shorts", "Joggers"],
-    Footwear: ["Sneakers", "Running Shoes"],
+    Topwear: ["T-Shirts", "Shirts", "Hoodies", "Sweatshirts"],
+    Bottomwear: ["Jeans", "Shorts", "Joggers", "Baggy Pants"],
+  
   },
   Women: {
     Topwear: ["Blouses", "Crop Tops", "Jackets"],
     Bottomwear: ["Leggings", "Jeans", "Shorts"],
-    Footwear: ["Heels", "Flats", "Slides"],
+   
   },
   Kids: {
     Boys: ["Tops", "Shorts", "Sets"],
@@ -39,13 +39,13 @@ const menuData = {
     Misc: ["Caps", "Socks", "Wallets"],
   },
   Shoes: {
-    "Men’s Shoes": ["Running", "Lifestyle", "Training"],
-    "Women’s Shoes": ["Running", "Lifestyle"],
+    "Men’s Shoes": ["Running", "Lifestyle","Basketball", "Casuals"],
+    "Women’s Shoes": ["Running", "Lifestyle", "Heels", "Flats"],
     "Kids Shoes": ["Sneakers", "Slip-ons"],
   },
   Collection: {
     Seasonal: ["Winter", "Summer", "Spring"],
-    Special: ["Limited Ed.", "Collabs"],
+    Special: ["Limited Ed.", "Collaborations"],
   },
   Sale: {
     Categories: ["Up to 30%", "30–50%", "Clearance"],
@@ -136,9 +136,11 @@ function Header({ cartItems = [], openCartModal, openShop, categoryData }) {
 
           {/* ICONS */}
           <div className="flex justify-self-end items-center space-x-5 text-white">
-            <Search className="w-5 h-5 cursor-pointer" />
+            <Search className="w-5 h-5 cursor-pointer"/>
             <Heart className="w-5 h-5 cursor-pointer" />
-            <User className="hidden md:block cursor-pointer" />
+            <User className="hidden md:block cursor-pointer" 
+            
+            />
             <div className="relative">
               <ShoppingCart onClick={openCartModal} />
               {cartItems.length > 0 && (
@@ -176,27 +178,27 @@ function Header({ cartItems = [], openCartModal, openShop, categoryData }) {
        <div className="grid grid-cols-4 gap-10">
   {categoryData?.[activeDropdown] &&
     Object.entries(categoryData[activeDropdown]).map(
-      ([section, items]) => (
-        <div key={section}>
-          <h4 className="uppercase text-gray-400 mb-4">
-            {section}
-          </h4>
+    ([section, items]) => (
+      <div key={section}>
+        <h4 className="uppercase text-gray-400 mb-4">
+          {section}
+        </h4>
 
-          {items.map((sub) => (
-            <p
-              key={sub}
-              className="cursor-pointer hover:text-white"
-              onClick={() => {
-                openShop(activeDropdown, sub);
-                setActiveDropdown(null);
-              }}
-            >
-              {sub}
-            </p>
-          ))}
-        </div>
-      )
-    )}
+        {items.map((sub) => (
+          <p
+            key={sub}
+            className="cursor-pointer hover:text-white"
+            onClick={() => {
+              openShop(activeDropdown, section, sub);
+              setActiveDropdown(null);
+            }}
+          >
+            {sub}
+          </p>
+        ))}
+      </div>
+    )
+)}
 </div>
       </div>
     </motion.div>
