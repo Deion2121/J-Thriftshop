@@ -146,7 +146,7 @@ function Header({ cartItems = [], openCartModal, openShop, categoryData }) {
               {cartItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">
                   {cartItems.length}
-                </span>
+                </motion.span>
               )}
             </div>
             <button
