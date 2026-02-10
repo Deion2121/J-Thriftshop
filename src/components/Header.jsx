@@ -1,270 +1,286 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Search,
-  Heart,
-  User,
-  ShoppingCart,
-  Menu,
-  X,
-  ChevronDown,
-  Loader,
-} from "lucide-react";
+import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
 import logo from "../assets/flogo.png";
 
-const menuData = {
-  New: {
-    Featured: ["Latest Arrivals", "Trending Now", "Limited Edition"],
-    Categories: ["Shirts", "Pants", "Jackets", "Accessories"],
-    Collections: ["Urban Wear", "Sports", "Essentials"],
-  },
+const brands = ["Nike", "Adidas", "Polo RL", "Vans", "Converse", "Puma", "Tommy Hilfiger", "New Balance", "Reebok", "Fila", "Uniqlo", "Champion", "Carhartt", "Guess"];
+
+// 1. Inilabas ang data para sa performance at para maiwasan ang declaration errors
+const MASTER_CATEGORY_DATA = {
   Men: {
-    Topwear: ["T-Shirts", "Shirts", "Hoodies", "Sweatshirts"],
-    Bottomwear: ["Jeans", "Shorts", "Joggers", "Baggy Pants"],
-  
+    Nike: {
+      Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+      Shoes: ["Lifestyle", "Running", "Jordan", "Football", "Basketball", "Skateboarding", "Slides", "Sandals"],
+      Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+    },
+    Adidas: {
+      Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+      Footwear: ["Ultraboost", "Stan Smith", "Superstar", "NMD", "Yeezy", "Adilette Slides", "Forum", "Samba", "Gazelle"],
+      Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+    },
+    "Polo RL": {
+      Clothing: ["T-Shirts", "Leather Jackets", "Shorts", "Pants", "Jackets", "Hoodies", "Polos", "Jeans"],
+      Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+    },
+      Vans: {
+        Shoes: ["Old Skool", "Authentic", "Slip-On", "Sk8-Hi", "Era", "Style 36", "Classic T-Shirt", "Checkerboard Collection"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Converse:{
+        Shoes: ["Chuck Taylor All Star", "One Star", "Jack Purcell", "Run Star Hike", "Converse Pro Leather", "Converse Weapon"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Puma:{
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Footwear: ["Suede Classic", "RS-X", "Cali", "Future Rider", "Roma", "LQD Cell", "Puma Clyde"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      "Tommy Hilfiger": {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      "New Balance": {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Footwear: ["574", "990v5", "1080v11", "Fresh Foam Hierro v6", "FuelCell Rebel v2", "Made in UK 991"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Reebok: {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Footwear: ["Classic Leather", "Club C 85", "Nano X1", "Zig Kinetica", "Reebok Question Mid"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Fila: {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Footwear: ["Disruptor II", "Ray Tracer", "Original Tennis", "F13", "Mindblower"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Uniqlo: {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Champion: {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Carhartt: {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      },
+      Guess: {
+        Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+        Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+      }
   },
   Women: {
-    Topwear: ["Blouses", "Crop Tops", "Jackets"],
-    Bottomwear: ["Leggings", "Jeans", "Shorts"],
-   
+    Nike: {
+      Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+      Shoes: ["Lifestyle", "Running", "Jordan", "Football", "Basketball", "Skateboarding", "Slides", "Sandals"],
+      Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+    },
+    Adidas: {
+      Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits", "Polos", "Sweatshirts", "Tank Tops", "Jeans"],
+      Footwear: ["Ultraboost", "Stan Smith", "Superstar", "NMD", "Yeezy", "Adilette Slides", "Forum", "Samba", "Gazelle"],
+      Accessories: ["Bags", "Caps and Hats", "Wallets", "Belts", "Sunglasses", "Watches", "Scarves", "Socks"]
+    }
   },
   Kids: {
-    Boys: ["Tops", "Shorts", "Sets"],
-    Girls: ["Dresses", "Tops", "Leggings"],
-    Baby: ["Newborn Sets", "Rompers"],
-  },
-  Accessories: {
-    Bags: ["Backpacks", "Crossbody", "Tote Bags"],
-    Gadgets: ["Headphones", "Chargers"],
-    Misc: ["Caps", "Socks", "Wallets"],
+    Nike: {
+      Clothing: ["T-Shirts", "Hoodies", "Shorts", "Pants", "Jackets", "Tracksuits"],
+      Shoes: ["Lifestyle", "Running", "Jordan"]
+    }
   },
   Shoes: {
-    "Men’s Shoes": ["Running", "Lifestyle","Basketball", "Casuals"],
-    "Women’s Shoes": ["Running", "Lifestyle", "Heels", "Flats"],
-    "Kids Shoes": ["Sneakers", "Slip-ons"],
-  },
-  Collection: {
-    Seasonal: ["Winter", "Summer", "Spring"],
-    Special: ["Limited Ed.", "Collaborations"],
-  },
-  Sale: {
-    Categories: ["Up to 30%", "30–50%", "Clearance"],
-  },
+    "New Arrival": ["Nike Air Max 2024", "Adidas Ultraboost 22", "Puma Future Rider"],
+    "Best Sellers": ["Nike Air Force 1", "Adidas Stan Smith", "Puma Suede Classic"],
+    "Limited Edition": ["Nike Dunk Low 'University Red'", "Adidas Yeezy Boost 350 V2 'Zebra'"]
+  }
 };
 
-function Header({ cartItems = [], openCartModal, openShop, categoryData }) {
+function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSearch }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeBrand, setActiveBrand] = useState("Nike");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileDropdown, setMobileDropdown] = useState(null);
-  const [scrolling, setScrolling] = useState(false);
-  const [scrollUp, setScrollUp] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  /* header bg on scroll */
-  useEffect(() => {
-    const onScroll = () => setScrolling(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  /* scroll direction detection */
+  // 2. Control Header Visibility on Scroll
   useEffect(() => {
-    const handleScroll = () => {
-      const current = window.scrollY;
-
-      if (current < lastScrollY && current > 80) {
-        setScrollUp(false);
-      } else {
-        setScrollUp(false);
-        setActiveDropdown(null);
+    const controlHeader = () => {
+      if (typeof window !== 'undefined') {
+        setIsScrolled(window.scrollY > 20);
+        if (window.scrollY > lastScrollY && window.scrollY > 100) {
+          setIsVisible(false);
+          setActiveDropdown(null);
+        } else {
+          setIsVisible(true);
+        }
+        setLastScrollY(window.scrollY);
       }
-
-      setLastScrollY(current);
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", controlHeader);
+    return () => window.removeEventListener("scroll", controlHeader);
   }, [lastScrollY]);
-
-  /* auto-open on scroll up */
-  useEffect(() => {
-    if (scrollUp && !activeDropdown) {
-      setActiveDropdown("New");
-    }
-  }, [scrollUp, activeDropdown]);
-
-  /* lock body on mobile menu */
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-  }, [mobileMenuOpen]);
 
   return (
     <>
-      {/* HEADER */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          activeDropdown
-            ? "bg-black/40 backdrop-blur-xl"
-            : scrolling
-            ? "bg-black"
-            : "bg-transparent"
+        className={`fixed top-0 left-0 w-full z-100 transition-all duration-300 border-b
+        ${isVisible ? 'translate-y-0' : '-translate-y-full'}
+        ${isScrolled || activeDropdown 
+          ? "bg-black border-white/10" 
+          : "bg-black md:bg-transparent border-transparent" 
         }`}
       >
-        <div className="absolute w-full grid grid-cols-3 items-center py-6 px-6">
-          {/* LOGO */}
-          <img src={logo} alt="Logo" className="w-20 invert" />
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
           
-
-          {/* DESKTOP MENU */}
-          <div
-            className="relative"
-            onMouseEnter={() => setActiveDropdown(activeDropdown)}
-            onMouseLeave={() => setActiveDropdown(null)}
-          >
-            <nav className="flex space-x-10">
-              {Object.keys(menuData).map((item) => (
-                <button
-                  key={item}
-                  onMouseEnter={() => setActiveDropdown(item)}
-                  className="relative text-lg font-medium text-white group"
-                >
-                  {item}
-                  <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-white transition-all group-hover:w-full" />
-                </button>
-              ))}
-            </nav>
+          {/* LOGO */}
+          <div onClick={refreshPage} className="cursor-pointer shrink-0 transition-transform active:scale-95">
+            <img src={logo} alt="Logo" className="h-10 md:h-14 w-auto object-contain" />
           </div>
 
-          {/* ICONS */}
-          <div className="flex justify-self-end items-center space-x-5 text-white">
-            <Search className="w-5 h-5 cursor-pointer"/>
-            <Heart className="w-5 h-5 cursor-pointer" />
-            <User className="hidden md:block cursor-pointer" 
-            
-            />
-            <div className="relative">
-              <ShoppingCart onClick={openCartModal} />
+          {/* MAIN NAV */}
+          <nav className="hidden md:flex space-x-10">
+            {["Men", "Women", "Kids", "Shoes", "Sale"].map((item) => (
+              <button
+                key={item}
+                onMouseEnter={() => setActiveDropdown(item)}
+                onClick={() => {
+                  openShop("All", item, "All");
+                  setActiveDropdown(null);
+                }}
+                className="relative text-[11px] font-black uppercase tracking-[0.3em] text-white group"
+              >
+                {item}
+                <span className={`absolute left-0 -bottom-2 h-0.5 bg-white transition-all duration-300 ${activeDropdown === item ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+              </button>
+            ))}
+          </nav>
+
+          {/* RIGHT ICONS */}
+          <div className="flex items-center space-x-5 text-white">
+            <div className="relative flex items-center">
+              <AnimatePresence>
+                {isSearchOpen && (
+                  <motion.input
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: "200px", opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    type="text"
+                    placeholder="SEARCH BRAND..."
+                    className="bg-white/10 border-b border-white/30 text-[10px] px-3 py-1 outline-none mr-3 uppercase tracking-widest"
+                    autoFocus
+                    onChange={(e) => handleSearch(e.target.value)}
+                  />
+                )}
+              </AnimatePresence>
+              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="hover:opacity-60 transition">
+                {isSearchOpen ? <X size={20} /> : <Search size={20} />}
+              </button>
+            </div>
+
+            <button className="hidden sm:block hover:opacity-60 transition"><User size={20} /></button>
+
+            <div className="relative cursor-pointer hover:opacity-60 transition" onClick={openCartModal}>
+              <ShoppingCart size={20} />
               {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">
+                <motion.span 
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  className="absolute -top-2 -right-2 bg-white text-black text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center"
+                >
                   {cartItems.length}
                 </motion.span>
               )}
             </div>
-            <button
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X /> : <Menu />}
-            </button>
+
+            <button className="md:hidden" onClick={() => setMobileMenuOpen(true)}><Menu size={24} /></button>
           </div>
         </div>
       </header>
 
-      {/* DESKTOP MEGA MENU */}
-     <AnimatePresence>
-  {activeDropdown && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-40 bg-black/30 backdrop-blur-xl"
-      onMouseEnter={() => setActiveDropdown(activeDropdown)}
-      onMouseLeave={() => setActiveDropdown(null)}
-    >
-      <div className="pt-32 max-w-7xl mx-auto px-10 text-white">
-        <h3 className="text-xl font-semibold uppercase mb-10">
-          {activeDropdown}
-        </h3>
-
-       <div className="grid grid-cols-4 gap-10">
-  {categoryData?.[activeDropdown] &&
-    Object.entries(categoryData[activeDropdown]).map(
-    ([section, items]) => (
-      <div key={section}>
-        <h4 className="uppercase text-gray-400 mb-4">
-          {section}
-        </h4>
-
-        {items.map((sub) => (
-          <p
-            key={sub}
-            className="cursor-pointer hover:text-white"
-            onClick={() => {
-              openShop(activeDropdown, section, sub);
-              setActiveDropdown(null);
-            }}
-          >
-            {sub}
-          </p>
-        ))}
-      </div>
-    )
-)}
-</div>
-      </div>
-    </motion.div>
-  )}
-</AnimatePresence>
-
-      {/* MOBILE MENU */}
-     <AnimatePresence>
-  {mobileMenuOpen && (
-    <motion.div
-      initial={{ x: "100%" }}
-      animate={{ x: 0 }}
-      exit={{ x: "100%" }}
-      className="fixed inset-0 bg-black z-40 p-6 md:hidden"
-    >
-      <div className="mt-20 space-y-6">
-        {Object.entries(menuData).map(([menu, sections]) => (
-          <div key={menu}>
-            {/* Main category button */}
-            <button
-              className="flex justify-between w-full text-white font-semibold"
-              onClick={() =>
-                setMobileDropdown(mobileDropdown === menu ? null : menu)
-              }
+      {/* MEGA MENU */}
+      <AnimatePresence>
+        {activeDropdown && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-80 backdrop-blur-sm"
+              onMouseEnter={() => setActiveDropdown(null)}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed inset-x-0 top-0 z-90 bg-black border-b border-white/10 pt-28 pb-16 hidden md:block shadow-2xl"
+              onMouseLeave={() => setActiveDropdown(null)}
             >
-              {menu}
-              <ChevronDown
-                className={`transition ${
-                  mobileDropdown === menu ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+              <div className="max-w-7xl mx-auto px-10 flex gap-16 text-white h-[55vh]">
+                
+                <div className="w-56 border-r border-white/10 space-y-4 overflow-y-auto pr-6 custom-scrollbar">
+                  <h3 className="text-[10px] tracking-[0.4em] text-gray-500 uppercase mb-6 font-black">Brands</h3>
+                  {brands.map((brand) => (
+                    <p
+                      key={brand}
+                      onMouseEnter={() => setActiveBrand(brand)}
+                      onClick={() => {
+                         openShop(brand, activeDropdown, "All");
+                         setActiveDropdown(null);
+                      }}
+                      className={`cursor-pointer uppercase text-[12px] tracking-[0.2em] transition-all ${
+                        activeBrand === brand ? "text-white font-black translate-x-3" : "text-gray-500 hover:text-white"
+                      }`}
+                    >
+                      {brand}
+                    </p>
+                  ))}
+                </div>
 
-            {/* Submenu items */}
-            {mobileDropdown === menu && (
-              <div className="mt-2 pl-4 space-y-2">
-                {Object.entries(sections).map(([section, items]) => (
-                  <div key={section}>
-                    <h4 className="text-sm text-gray-400 uppercase mb-1">
-                      {section}
-                    </h4>
-                    {items.map((sub) => (
-                      <p
-                        key={sub}
-                        className="text-white py-1 cursor-pointer hover:text-gray-300 transition"
-                        onClick={() => {
-                          if (openShop) {
-                            openShop(menu, sub); // 🔥 connects mobile click to shop
-                          }
-                          setMobileMenuOpen(false); // close mobile menu
-                          setMobileDropdown(null);  // reset dropdown state
-                        }}
-                      >
-                        {sub}
-                      </p>
-                    ))}
+                <div className="flex-1 overflow-y-auto pr-4 custom-scrollbar">
+                  <div className="flex justify-between items-baseline mb-10">
+                    <h3 className="text-[10px] tracking-[0.4em] text-gray-500 uppercase font-black">
+                      {activeBrand} <span className="mx-2 text-white/20">/</span> {activeDropdown}
+                    </h3>
                   </div>
-                ))}
+                  
+                  <div className="grid grid-cols-4 gap-x-12 gap-y-12">
+                    {(() => {
+                      const currentCatData = MASTER_CATEGORY_DATA[activeDropdown];
+                      const displayData = currentCatData?.[activeBrand] || currentCatData;
+
+                      if (displayData && typeof displayData === 'object' && !Array.isArray(displayData)) {
+                        return Object.entries(displayData).map(([section, items]) => (
+                          <div key={section} className="space-y-6">
+                            <h4 className="uppercase text-[11px] font-black text-white border-b border-white/10 pb-3 tracking-[0.2em]">
+                              {section}
+                            </h4>
+                            <ul className="space-y-4">
+                              {Array.isArray(items) && items.map((sub) => (
+                                <li
+                                  key={sub}
+                                  className="text-gray-500 text-[13px] font-medium cursor-pointer hover:text-white hover:translate-x-2 transition-all duration-300"
+                                  onClick={() => {
+                                    openShop(activeBrand, activeDropdown, sub);
+                                    setActiveDropdown(null);
+                                  }}
+                                >
+                                  {sub}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ));
+                      }
+                      return <div className="text-gray-600 uppercase text-[10px] tracking-widest">Select a valid category</div>;
+                    })()}
+                  </div>
+                </div>
               </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  )}
-</AnimatePresence>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

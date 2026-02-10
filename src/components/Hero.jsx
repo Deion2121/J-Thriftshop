@@ -27,11 +27,11 @@ const Hero = ({ openShop }) => {
           transition={{ duration: 1 }}
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif tracking-tight"
         >
-          The New Standard of Style
+          Vintage & Thrift finds
         </motion.h1>
 
         <p className="mt-5 text-md sm:text-xl md:text-2xl font-serif tracking-wide text-gray-200 max-w-3xl mx-auto">
-          Discover timeless fashion crafted with elegance and precision.
+          One man’s trash is another man’s treasure
         </p>
         <button
           onClick={() => openShop(null, null)}
