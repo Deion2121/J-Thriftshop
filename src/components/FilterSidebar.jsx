@@ -6,7 +6,8 @@ const FilterSidebar = ({ isOpen, onClose, filters, setFilters, allProducts = [] 
   const brandOptions = ["Nike", "Adidas", "Polo RL", "Vans", "Converse", "Puma", "Tommy Hilfiger", "New Balance", "Reebok", "Fila", "Uniqlo", "Champion", "Carhartt", "Guess"];
   const sortOptions = ["Newest", "Price: Low to High", "Price: High to Low"];
   const genderOptions = ["Men", "Women", "Unisex"]; 
-  const sizeOptions = ["UK 5", "UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11"];
+  const sizeOptions = ["S", "M", "L", "XL", "XXL"];
+  const shoeSizeOptions = ["UK 5", "UK 6", "UK 7", "UK 8", "UK 9", "UK 10", "UK 11"];
 
   // LIVE COUNT LOGIC
   const filteredCount = useMemo(() => {
@@ -106,6 +107,13 @@ const FilterSidebar = ({ isOpen, onClose, filters, setFilters, allProducts = [] 
                 items={sizeOptions}
                 selected={filters.size}
                 onSelect={(val) => handleUpdate("size", val)}
+                
+              />
+              <FilterAccordion
+                title="Shoe Size"
+                items={shoeSizeOptions}
+                selected={filters.shoeSize}
+                onSelect={(val) => handleUpdate("shoeSize", val)}
               />
             </div>
 
