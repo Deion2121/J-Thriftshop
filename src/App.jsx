@@ -15,7 +15,6 @@ import chhood from "./assets/carhartt/chhood.png";
 import chtop from "./assets/carhartt/chtop.png";
 import niket from "./assets/nike/ntshirt.png";
 import niket1 from "./assets/nike/ntshirt1.png";
-import niket2 from "./assets/nike/ntshirt2.png";
 import nkdunk from "./assets/nike/nikedunk.png";
 import nkdunk1 from "./assets/nike/nikedunk1.png";
 import nkdunk2 from "./assets/nike/nikedunk2.png";
@@ -23,12 +22,8 @@ import nkdunk3 from "./assets/nike/nikedunk3.png";
 import nkdunk4 from "./assets/nike/nikedunk4.png";
 import atshirt from "./assets/adidas/atshirtm.png";
 import atshirt1 from "./assets/adidas/atshirtm1.png";
-import atshirt2 from "./assets/adidas/atshirtm2.png";
-import atshirt3 from "./assets/adidas/atshirtm3.png";
-import adispz from "./assets/adidas/spezial.png";
-import adispz1 from "./assets/adidas/spezial1.png";
-import adispz2 from "./assets/adidas/spezial2.png";
-import adispz3 from "./assets/adidas/spezial3.png";
+
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -89,7 +84,6 @@ function App() {
       variants: [
         { colorName: "Black", colorHex: "#000000", image: niket },
         { colorName: "White", colorHex: "#FFFFFF", image: niket1 },
-        { colorName: "Dark Blue", colorHex: "#162A43", image: niket2 }
       ]
     },
      { 
@@ -102,10 +96,10 @@ function App() {
       img: nkdunk,
       variants: [
         { colorName: "deep navy blue", colorHex: "#162A43", image: nkdunk },
-        { colorName: "black", colorHex: "#000000", image: nkdunk1 },
-        { colorName: "pale peach", colorHex: "#ECD3CE", image: nkdunk2 },
-        { colorName: "dusty teal", colorHex: "#7FA4AC", image: nkdunk3 },
-        { colorName: "turquoise green", colorHex: "#00A18F", image: nkdunk4 }
+        { colorName: "white", colorHex: "#FFFFFF", image: nkdunk1 },
+        { colorName: "light gray", colorHex: "#D3D3D3", image: nkdunk2 },
+        { colorName: "red", colorHex: "#FF0000", image: nkdunk3 },
+        { colorName: "green", colorHex: "#008000", image: nkdunk4 },
       ]
     },
     { 
@@ -118,38 +112,10 @@ function App() {
       img: atshirt,
       variants: [
         { colorName: "Black", colorHex: "#000000", image: atshirt1 },
-        { colorName: "Red", colorHex: "#FF0000", image: atshirt2 },
-        { colorName: "Blue", colorHex: "#0000FF", image: atshirt3 }
+        { colorName: "White", colorHex: "#FFFFFF", image: atshirt },  
       ]
     },
-     { 
-      id: 6, 
-      title: "Adidas T-Shirt", 
-      brand: "Adidas", 
-      category: "Men", 
-      subCategory: "T-Shirts", 
-      price: 1500, 
-      img: atshirt,
-      variants: [
-        { colorName: "Black", colorHex: "#000000", image: atshirt},
-      ]
-    },
-    { 
-      id: 7, 
-      title: "Adidas Spezial Hoodie", 
-      brand: "Adidas", 
-      category: "Men", 
-      subCategory: "Hoodies", 
-      price: 3500, 
-      img: adispz,
-      variants: [
-        { colorName: "White", colorHex: "#FFFFFF", image: adispz },
-        { colorName: "Black", colorHex: "#000000", image: adispz1 },
-        { colorName: "Red", colorHex: "#FF0000", image: adispz2 },
-        { colorName:"Blue" ,colorHex:"#4169E1" ,image :adispz3}
-        
-      ]
-    }
+
   ]);
 
   // Logic Functions

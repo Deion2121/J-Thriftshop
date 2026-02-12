@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Heart } from "lucide-react";
 
 const ProductCard = ({ product, addToCart }) => {
-  // Local state para sa hover-to-sync image logic
-  // Kung walang variants ang product, fallback tayo sa main img
   const [selectedVariant, setSelectedVariant] = useState(
     product.variants ? product.variants[0] : { image: product.img, colorName: "Default" }
   );
@@ -17,7 +15,7 @@ const ProductCard = ({ product, addToCart }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* IMAGE CONTAINER */}
-      <div className="relative aspect-3/4 overflow-hidden bg-[#f6f6f6] rounded-sm">
+      <div className="relative aspect-square bg-[#f6f6f6] overflow-hideen group">
         <AnimatePresence mode="wait">
           <motion.img
             key={selectedVariant.image} // Mahalaga para sa fade transition kapag nagpalit ng kulay
@@ -27,7 +25,7 @@ const ProductCard = ({ product, addToCart }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-contain p-6 md:p-10 transition-transform duration-500 group-hover:scale-105"
           />
         </AnimatePresence>
 

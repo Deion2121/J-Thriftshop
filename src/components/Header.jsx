@@ -34,6 +34,7 @@ const MASTER_CATEGORY_DATA = {
 function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSearch }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false); // New User State
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -70,7 +71,7 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-100 transition-all duration-500 border-b
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 border-b
         ${isVisible ? 'translate-y-0' : '-translate-y-full'}
         ${isScrolled || activeDropdown 
           ? "bg-black border-white/10 py-2" 
@@ -129,7 +130,11 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
               </button>
             </div>
 
-            <button className="hidden sm:block hover:scale-110 transition active:scale-90">
+            {/* USER ICON - Trigger for User Archive Sidebar */}
+            <button 
+              onClick={() => setUserMenuOpen(true)}
+              className="hidden sm:block hover:scale-110 transition active:scale-90"
+            >
               <User size={20} />
             </button>
 
@@ -168,29 +173,24 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
               onMouseEnter={() => setActiveDropdown(activeDropdown)}
             >
               <div className="max-w-7xl mx-auto px-8 grid grid-cols-4 gap-12">
-                
-                {/* Column 1: FEATURED BRANDS (Ngayon ay 2 Columns na) */}
-<div className="space-y-6 col-span-1 border-r border-white pr-4">
-  <h3 className="text-[10px] text-gray-500 font-black tracking-[0.4em] uppercase">Choose Brand</h3>
-  
-  {/* Ginamit natin ang grid-cols-2 dito */}
-  <div className="grid grid-cols-1 gap-x-2 gap-y-3">
-    {brands.map(brand => (
-      <button 
-        key={brand}
-        onClick={() => { 
-          openShop(brand, activeDropdown, "All"); 
-          setActiveDropdown(null); 
-        }}
-        className="text-white text-[13px] font-black italic uppercase tracking-tighter text-left hover:text-gray-400 hover:translate-x-1 transition-all whitespace-nowrap"
-      >
-        {brand}
-      </button>
-    ))}
-  </div>
-</div>
+                <div className="space-y-6 col-span-1 border-r border-white pr-4">
+                  <h3 className="text-[10px] text-gray-500 font-black tracking-[0.4em] uppercase">Choose Brand</h3>
+                  <div className="grid grid-cols-1 gap-x-2 gap-y-3">
+                    {brands.map(brand => (
+                      <button 
+                        key={brand}
+                        onClick={() => { 
+                          openShop(brand, activeDropdown, "All"); 
+                          setActiveDropdown(null); 
+                        }}
+                        className="text-white text-[13px] font-black italic uppercase tracking-tighter text-left hover:text-gray-400 hover:translate-x-1 transition-all whitespace-nowrap"
+                      >
+                        {brand}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-                {/* Dynamic Columns from MASTER_DATA (Clothing, Shoes, etc.) */}
                 {Object.entries(MASTER_CATEGORY_DATA[activeDropdown]).map(([subCat, items]) => (
                   <div key={subCat} className="space-y-6">
                     <h3 className="text-[10px] text-gray-500 font-black tracking-[0.4em] uppercase">{subCat}</h3>
@@ -210,12 +210,89 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
                     </ul>
                   </div>
                 ))}
-
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </header>
+
+      {/* USER ARCHIVE SIDEBAR (Retro/Busy Version) */}
+      <AnimatePresence>
+        {userMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setUserMenuOpen(false)}
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[250]"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 h-full w-full max-w-[400px] bg-white text-black z-[300] p-8 flex flex-col shadow-[-10px_0px_30px_rgba(0,0,0,0.2)]"
+            >
+              <div className="flex justify-between items-center mb-16">
+                <div className="flex flex-col">
+                    <h2 className="text-3xl font-black uppercase italic tracking-tighter leading-none">Account</h2>
+                    <span className="text-[9px] font-mono text-gray-400 mt-1 uppercase">Member Archive // Access_01</span>
+                </div>
+                <button onClick={() => setUserMenuOpen(false)} className="border-2 border-black p-2 hover:rotate-90 transition-transform">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="flex-1 space-y-10">
+                <div className="space-y-6">
+                  <div className="relative">
+                    <input 
+                      type="email" 
+                      placeholder="EMAIL@ADDRESS.COM" 
+                      className="w-full border-b-2 border-black py-3 text-xs font-bold outline-none placeholder:text-gray-200 focus:border-gray-400 transition-colors"
+                    />
+                    <label className="absolute -top-4 left-0 text-[8px] font-black text-gray-400 tracking-widest">USER_ID</label>
+                  </div>
+                  <div className="relative">
+                    <input 
+                      type="password" 
+                      placeholder="PASSWORD" 
+                      className="w-full border-b-2 border-black py-3 text-xs font-bold outline-none placeholder:text-gray-200 focus:border-gray-400 transition-colors"
+                    />
+                    <label className="absolute -top-4 left-0 text-[8px] font-black text-gray-400 tracking-widest">SECURE_KEY</label>
+                  </div>
+                  <button className="w-full bg-black text-white py-5 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-yellow-400 hover:text-black transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-1 active:shadow-none">
+                    Enter Archive
+                  </button>
+                </div>
+
+                <div className="pt-10 flex flex-col items-center">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-gray-400">— Not a member? —</p>
+                  <button className="w-full border-2 border-black py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all active:scale-95">
+                    Create Identity
+                  </button>
+                </div>
+              </div>
+
+              {/* Decorative Footer */}
+              <div className="mt-auto border-t-2 border-dashed border-gray-100 pt-6">
+                <div className="flex justify-between items-end">
+                    <div className="space-y-1">
+                        <div className="flex gap-1">
+                            {[...Array(15)].map((_, i) => (
+                                <div key={i} className={`h-4 bg-black ${i % 3 === 0 ? 'w-1' : 'w-[0.5px]'}`} />
+                            ))}
+                        </div>
+                        <p className="text-[8px] font-mono text-gray-400 tracking-tighter uppercase">Authentic_Vintage_Selected_2026</p>
+                    </div>
+                    <p className="text-[10px] font-black italic uppercase">Thrift Finds</p>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* MOBILE MENU */}
       <AnimatePresence>
