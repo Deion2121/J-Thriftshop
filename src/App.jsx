@@ -198,7 +198,8 @@ function App() {
                   <LogoSlider />
                 </>
               ) : (
-                <main className="pt-32 pb-20">
+                
+                <main className="pt-18 pb-20">
                   <div className="max-w-[1400px] mx-auto px-2 md:px-10">
                     <button onClick={goHome} className="group mb-8 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em] hover:text-gray-500 transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 transition-transform group-hover:-translate-x-1">
@@ -207,12 +208,10 @@ function App() {
                       Back to Home
                     </button>
 
-                    <h1 className="text-2xl font-black uppercase mb-2 tracking-tighter">
+                    <h1 className="text-2xl font-black text-center uppercase mb-2 tracking-tighter">
                       {searchTerm ? `Results for: ${searchTerm}` : filters.brand !== "All" ? `${filters.brand} ${filters.category}` : "All Products"}
                     </h1>
-                    <p className="text-[10px] text-gray-500 mb-8 uppercase tracking-widest">
-                      [{filteredProducts.length}] Items Found
-                    </p>
+                    
 
                     {/* 4. ProductGrid handles hover-sync internal logic */}
                     <ProductGrid

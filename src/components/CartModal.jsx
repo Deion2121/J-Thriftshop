@@ -19,7 +19,7 @@ const CartModal = ({ isOpen, onClose, cartItems, setCartItems, openCheckout }) =
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 z-[300] backdrop-blur-sm"
+            className="fixed inset-0 bg-black/70 z-300 backdrop-blur-sm"
           />
 
           {/* SIDEBAR */}
@@ -28,7 +28,7 @@ const CartModal = ({ isOpen, onClose, cartItems, setCartItems, openCheckout }) =
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[301] shadow-2xl flex flex-col border-l-2 border-black"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-301 shadow-2xl flex flex-col border-l-2 border-black"
           >
             {/* HEADER */}
             <div className="p-6 border-b-2 border-black flex justify-between items-center bg-white sticky top-0 z-10">
@@ -55,13 +55,7 @@ const CartModal = ({ isOpen, onClose, cartItems, setCartItems, openCheckout }) =
                     <ShoppingBag size={32} className="text-gray-300" />
                   </div>
                   <div className="space-y-2">
-                    <p className="text-gray-400 uppercase text-[10px] font-black tracking-[0.3em]">Archive is empty</p>
-                    <button 
-                      onClick={onClose} 
-                      className="text-xs font-black border-b-2 border-black uppercase tracking-widest hover:text-gray-500 hover:border-gray-500 transition-all"
-                    >
-                      Start Hunting
-                    </button>
+                    <p className="text-red-600 uppercase text-[10px] font-black tracking-[0.3em]">Archive is empty</p>
                   </div>
                 </div>
               ) : (

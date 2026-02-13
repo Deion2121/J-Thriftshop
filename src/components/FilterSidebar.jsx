@@ -43,13 +43,13 @@ const FilterSidebar = ({ isOpen, onClose, filters, setFilters, allProducts = [],
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 z-[110] backdrop-blur-[2px]"
+            className="fixed inset-0 bg-black/60 z-110 backdrop-blur-[2px]"
           />
 
           <motion.div
             initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed right-0 top-0 h-full w-full sm:w-[450px] bg-white z-[120] shadow-2xl flex flex-col border-l-4 border-black"
+            className="fixed right-0 top-0 h-full w-full sm:w-[450px] bg-white z-120 shadow-2xl flex flex-col border-l-4 border-black"
           >
             {/* HEADER - DYNAMIC */}
             <div className="p-6 flex justify-between items-center border-b-2 border-black bg-white sticky top-0 z-10">
@@ -150,7 +150,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, setFilters, allProducts = [],
                   <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center text-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-4 border-black">
                     <CheckCircle2 size={48} />
                   </div>
-                  <h3 className="text-4xl font-black uppercase italic italic leading-none">Order <br/> Confirmed!</h3>
+                  <h3 className="text-4xl font-black uppercase italic leading-none">Order <br/> Confirmed!</h3>
                   <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Wait for our text for tracking details.</p>
                   <button onClick={onClose} className="px-10 py-4 bg-black text-white font-black uppercase tracking-widest">Back to Browsing</button>
                 </div>

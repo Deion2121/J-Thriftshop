@@ -11,11 +11,11 @@ const Hero = ({ openShop }) => {
         <video
           src={clip}
           autoPlay loop muted playsInline
-          className="w-full h-full object-cover opacity-70 grayscale-[20%]"
+          className="w-full h-full object-cover opacity-70 grayscale-20%"
         />
         {/* Scanlines / Noise Overlay */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-black/60" />
       </div>
 
       {/* 2. FLOATING STICKERS (Retro/Busy Elements) */}
@@ -96,7 +96,7 @@ const Hero = ({ openShop }) => {
           className="flex gap-10 font-black uppercase text-sm tracking-tighter"
         >
           {[...Array(10)].map((_, i) => (
-            <span key={i}>Sustainable Fashion • No Restocks • Handpicked in Manila • Wear the Past •</span>
+            <span key={i}>100% Sustainable • Good As New • Handpicked in Cavite• Wear the Past •</span>
           ))}
         </motion.div>
       </div>

@@ -45,9 +45,8 @@ const ProductGrid = ({ products, filters, onOpenFilters, addToCart }) => {
         </button>
       </div>
 
-      {/* GRID SYSTEM */}
-      {/* grid-cols-2 sa mobile, md:grid-cols-3 sa tablets, lg:grid-cols-4 sa desktop */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 md:gap-x-6 gap-y-12 md:gap-y-16">
+      {/* FIXED GRID SYSTEM - Pinantay ang gaps at sizes */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-14">
         <AnimatePresence mode="popLayout">
           {sortedProducts.map((product, index) => (
             <motion.div
@@ -56,7 +55,7 @@ const ProductGrid = ({ products, filters, onOpenFilters, addToCart }) => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4, delay: index * 0.03 }}
+              transition={{ duration: 0.4, delay: index * 0.02 }}
             >
               <ProductCard product={product} addToCart={addToCart} />
             </motion.div>

@@ -15,7 +15,7 @@ const ProductCard = ({ product, addToCart }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* IMAGE CONTAINER */}
-      <div className="relative aspect-square bg-[#f6f6f6] overflow-hideen group">
+      <div className="relative w-full aspect-square overflow-hidden bg-[#f9f9f9] group mb-4">
         <AnimatePresence mode="wait">
           <motion.img
             key={selectedVariant.image} // Mahalaga para sa fade transition kapag nagpalit ng kulay
@@ -25,7 +25,7 @@ const ProductCard = ({ product, addToCart }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="w-full h-full object-contain p-6 md:p-10 transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
           />
         </AnimatePresence>
 

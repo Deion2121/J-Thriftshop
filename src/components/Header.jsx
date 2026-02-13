@@ -22,8 +22,7 @@ const MASTER_CATEGORY_DATA = {
     "Toddlers [0-4]": ["boys Clothing", "Girls Clothing"]
   },
   Shoes: {
-    Categories: ["Lifestyle", "Running", "Basketball", "Training", "Football", "Skateboarding"],
-    Brands: ["Nike", "Adidas", "New Balance", "Vans", "Converse"]
+    Categories: ["Lifestyle", "Running", "Basketball", "Training", "Football", "Skateboarding"]
   },
   Sale: {
     Offers: ["Clearance", "Last Chance", "Seasonal Sale", "Flash Sale"],
@@ -71,7 +70,7 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 border-b
+        className={`fixed top-0 left-0 w-full z-100 transition-all duration-500 border-b
         ${isVisible ? 'translate-y-0' : '-translate-y-full'}
         ${isScrolled || activeDropdown 
           ? "bg-black border-white/10 py-2" 
@@ -225,14 +224,14 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setUserMenuOpen(false)}
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[250]"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-250"
             />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 h-full w-full max-w-[400px] bg-white text-black z-[300] p-8 flex flex-col shadow-[-10px_0px_30px_rgba(0,0,0,0.2)]"
+              className="fixed right-0 top-0 h-full w-full max-w-[400px] bg-white text-black z-300 p-8 flex flex-col shadow-[-10px_0px_30px_rgba(0,0,0,0.2)]"
             >
               <div className="flex justify-between items-center mb-16">
                 <div className="flex flex-col">
@@ -260,7 +259,7 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
                       placeholder="PASSWORD" 
                       className="w-full border-b-2 border-black py-3 text-xs font-bold outline-none placeholder:text-gray-200 focus:border-gray-400 transition-colors"
                     />
-                    <label className="absolute -top-4 left-0 text-[8px] font-black text-gray-400 tracking-widest">SECURE_KEY</label>
+                    <label className="absolute -top-4 left-0 text-[8px] font-black text-gray-400 tracking-widest">PASSWORD</label>
                   </div>
                   <button className="w-full bg-black text-white py-5 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-yellow-400 hover:text-black transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,0.1)] active:translate-y-1 active:shadow-none">
                     Enter Archive
@@ -284,7 +283,7 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
                                 <div key={i} className={`h-4 bg-black ${i % 3 === 0 ? 'w-1' : 'w-[0.5px]'}`} />
                             ))}
                         </div>
-                        <p className="text-[8px] font-mono text-gray-400 tracking-tighter uppercase">Authentic_Vintage_Selected_2026</p>
+                        <p className="text-[8px] font-mono text-gray-600 tracking-tighter uppercase">Authentic_Vintage_Selected_2026</p>
                     </div>
                     <p className="text-[10px] font-black italic uppercase">Thrift Finds</p>
                 </div>
@@ -302,7 +301,7 @@ function Header({ cartItems = [], openCartModal, openShop, refreshPage, handleSe
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.4 }}
-            className="fixed inset-0 z-[200] bg-black text-white flex flex-col"
+            className="fixed inset-0 z-200 bg-black text-white flex flex-col"
           >
             <div className="flex items-center justify-between px-6 h-20 border-b border-white/10">
               <img src={logo} alt="Logo" className="h-10 w-auto" />
