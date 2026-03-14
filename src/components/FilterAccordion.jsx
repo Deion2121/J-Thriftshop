@@ -16,7 +16,7 @@ const FilterAccordion = ({
   const isSizeGrid = title.toLowerCase().includes("size");
 
   return (
-    <div className="border-b border-gray-100 py-4">
+    <div className="border-b py-4">
       {/* Accordion Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -43,10 +43,7 @@ const FilterAccordion = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            {/* DYNAMIC GRID: 
-              - Kung Size, naka-grid (3 columns)
-              - Kung hindi Size (like Brands/Sort), naka-flex wrap (default)
-            */}
+           
             <div className={
               isSizeGrid 
               ? "grid grid-cols-3 gap-2 pb-2" 

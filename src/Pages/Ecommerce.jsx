@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import chhood from "../assets/chhood.png";
+import chhood from "../assets/carhartt/chhood.png";
 import s from "../assets/s.png";
 import nb from "../assets/nb.png";
 
@@ -13,6 +13,7 @@ const Ecommerce = ({ addToCart, filters }) => {
     { id: 101, title: "Premium Trouser", price: 135, img: chhood, category: "MEN" },
     { id: 102, title: "Urban Sling Bag", price: 55, img: s, category: "WOMEN" },
     { id: 103, title: "Classic Basic Tee", price: 35, img: nb, category: "MEN" },
+    
   ];
 
   const handleAddToCart = (product) => {
