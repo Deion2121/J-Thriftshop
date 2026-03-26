@@ -1,121 +1,112 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { authService } from "../services/AuthServices";
 
 const Login = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const { login } = useAuth();
+  const { login, currentUser } = useAuth();
   const navigate = useNavigate();
 
+  // Block access if already logged in
+  if (currentUser) {
+    if (currentUser.role === "admin") return <Navigate to="/admin" replace />;
+    return <Navigate to="/" replace />;
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (loading) return;
 
-     try {
-    const res = await authService.login({ email, password });
+    setLoading(true);
+    setErrorMsg("");
 
-    localStorage.setItem("user", JSON.stringify(res.user));
+    try {
+      const res = await authService.login({ email, password });
+      const user = res?.user || res?.data?.user;
+      const token = res?.token || res?.data?.token;
 
-    // redirect depending on role
-    if (res.user.role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate("/");
+      if (!user || !token) throw new Error("Invalid login response");
+
+      // Save user & token in context/localStorage
+      login(user, token);
+
+      // Redirect based on role
+      if (user.role === "admin") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
+      console.error("LOGIN ERROR:", err);
+      const friendlyError = err.message?.includes("Failed to fetch")
+        ? "Server is offline. Please try again later."
+        : err.message;
+      setErrorMsg(friendlyError);
+    } finally {
+      setLoading(false);
     }
-
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
-
-      {/* Background Glow */}
       <div className="absolute w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl top-10 left-10"></div>
       <div className="absolute w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl bottom-10 right-10"></div>
 
-
       <div className="bg-white rounded-3xl shadow-2xl w-[400px] p-10 relative z-10">
-
-        {/* Title */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold tracking-wide text-black">
-            Log In
-          </h1>
+          <h1 className="text-3xl font-bold text-black">Log In</h1>
+          {errorMsg && (
+            <p className="mt-4 text-sm text-red-500 bg-red-50 p-2 rounded-lg border border-red-200">
+              {errorMsg}
+            </p>
+          )}
         </div>
 
-
         <form onSubmit={handleLogin} className="space-y-5">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          {/* EMAIL */}
-          <div>
-            <label className="text-sm font-medium text-gray-600">
-              Email Address
-            </label>
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none transition-all"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-            <input
-              type="email"
-              placeholder="sample@example.com"
-              className="w-full mt-2 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-
-          {/* PASSWORD */}
-          <div>
-            <label className="text-sm font-medium text-gray-600">
-              Password
-            </label>
-
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full mt-2 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-
-          {/* LOGIN BUTTON */}
           <button
             type="submit"
-            className="w-full mt-4 py-3 rounded-xl bg-black text-white font-semibold hover:bg-yellow-500 hover:text-black transition duration-300"
+            disabled={loading}
+            className={`w-full py-3 bg-black text-white rounded-xl font-semibold transition-all ${
+              loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"
+            }`}
           >
-            Sign In
+            {loading ? "Signing in..." : "Sign In"}
           </button>
 
-
-          {/* REGISTER BUTTON */}
           <button
             type="button"
             onClick={() => navigate("/register")}
-            className="w-full py-3 rounded-xl border border-black text-black font-semibold hover:bg-black hover:text-white transition duration-300"
+            className="w-full py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-medium"
           >
             Create Account
           </button>
-
         </form>
-
-
-        <p className="text-xs text-gray-400 text-center mt-6">
-          © 2026 JThrift. All rights reserved.
-        </p>
-
       </div>
-
     </div>
   );
 };
 
 export default Login;
-

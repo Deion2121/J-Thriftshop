@@ -1,26 +1,27 @@
+// src/routes/Adminroutes.jsx
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const AdminRoute = () => {
+  const { currentUser, loading } = useAuth();
 
-  const { user, loading, isAdmin } = useAuth();
-
+  // wait auth check
   if (loading) {
     return <div className="p-10 text-center">Loading...</div>;
   }
 
-  // Not logged in
-  if (!user) {
+  // not logged in
+  if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
 
-  // Logged in but not admin
-  if (!isAdmin) {
+  // not admin
+  if (currentUser.role !== "admin") {
     return <Navigate to="/" replace />;
   }
 
-  // Admin access allowed
+  // allow admin
   return <Outlet />;
 };
 

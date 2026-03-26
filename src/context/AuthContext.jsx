@@ -1,57 +1,132 @@
-// src/context/AuthContext.jsx
-import { createContext, useContext, useEffect, useState } from 'react';
-import { userService } from '../services/userService';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import { userService } from "../services/userServices";
+import { authService } from "../services/AuthServices";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // ✅ start true
+  const [loading, setLoading] = useState(true);
+
+  // ----------------------------------------
+  // Initialize user session
+  // ----------------------------------------
+  const initSession = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      console.log("INIT TOKEN:", token);
+
+      //No token → no session
+      if (!token) {
+        setCurrentUser(null);
+        setLoading(false);
+        return;
+      }
+
+      //API first
+      try {
+        const user = await userService.getCurrentUser(token);
+
+        console.log("SESSION USER:", user);
+
+        setCurrentUser(user);
+
+        // ✅ Save backup (optional but recommended)
+        localStorage.setItem("user", JSON.stringify(user));
+
+      } catch (apiError) {
+        console.warn("API failed, using localStorage fallback");
+
+        // ✅ Fallback to stored user
+        const storedUser = localStorage.getItem("user");
+
+        if (storedUser) {
+          setCurrentUser(JSON.parse(storedUser));
+        } else {
+          setCurrentUser(null);
+        }
+      }
+
+    } catch (error) {
+      console.error("❌ Session initialization failed:", error.message);
+      setCurrentUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     initSession();
-  }, []);
+  }, [initSession]);
 
-  const initSession = async () => {
+  // ----------------------------------------
+  // Login
+  // ----------------------------------------
+  const login = (userData, token) => {
+    console.log("LOGIN USER:", userData);
+
+    setCurrentUser(userData);
+
+    if (token) {
+      localStorage.setItem("accessToken", token);
+    }
+
+    // ✅ Save user for refresh persistence
+    localStorage.setItem("user", JSON.stringify(userData));
+  };
+
+  // ----------------------------------------
+  // Logout
+  // ----------------------------------------
+  const logout = async () => {
     try {
-      const user = await userService.getCurrentUser();
-      setCurrentUser(user ?? null); // ✅ null = guest, not an error
-    } catch (err) {
-      // ✅ should never reach here now, but just in case
-      console.warn('initSession failed:', err.message);
-      setCurrentUser(null);
+      await userService.logout();
+    } catch (error) {
+      console.warn("Logout API failed:", error.message);
     } finally {
-      setLoading(false); // ✅ always stop loading regardless
+      setCurrentUser(null);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
     }
   };
 
-  const login = (userData) => setCurrentUser(userData);
-
-  const logout = async () => {
-    try {
-      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/users/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      });
-    } catch (err) {
-      console.warn('Logout request failed:', err.message);
-    } finally {
-      setCurrentUser(null); // ✅ always clear user even if request fails
-    }
+  // ----------------------------------------
+  // Context value
+  // ----------------------------------------
+  const value = {
+    currentUser,
+    loading,
+    login,
+    logout,
+    initSession,
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading, login, logout, initSession }}>
-      {/* ✅ Don't render children until session is resolved */}
-      {!loading && children}
+    <AuthContext.Provider value={value}>
+      {/* ✅ Prevent render until auth ready */}
+      {!loading ? children : <div>Loading...</div>}
     </AuthContext.Provider>
   );
 };
 
+// ----------------------------------------
+// Custom hook
+// ----------------------------------------
 export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
-  return ctx;
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
 };
 
 export default AuthContext;

@@ -1,86 +1,68 @@
-// src/services/authService.js
-
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-/*
-Reusable request handler
-*/
-const request = async (endpoint, options = {}) => {
-
-  try {
-
-    const res = await fetch(`${API_URL}${endpoint}`, {
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {})
-      },
-      ...options
-    });
-
-    let data = null;
-
-    try {
-      data = await res.json();
-    } catch {
-      data = null;
-    }
-
-    if (!res.ok) {
-      throw new Error(data?.message || "Request failed");
-    }
-
-    return data;
-
-  } catch (error) {
-
-    console.error("Auth API Error:", error);
-    throw error;
-
-  }
-
-};
-
 export const authService = {
-
   // ---------------- REGISTER ----------------
   register: async ({ email, password }) => {
+    try {
+      const res = await fetch(`${API_URL}/api/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    return request("/api/users/register", {
-      method: "POST",
-      body: JSON.stringify({ email, password })
-    });
-
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Register failed");
+      return data;
+    } catch (error) {
+      // Catching "Failed to fetch" (Server down) errors specifically
+      throw new Error(error.message === "Failed to fetch" 
+        ? "Cannot connect to server. Is the backend running?" 
+        : error.message);
+    }
   },
 
   // ---------------- LOGIN ----------------
-  login: async ({ email, password, role }) => {
+  login: async ({ email, password }) => {
+    try {
+      const res = await fetch(`${API_URL}/api/users/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    return request("/api/users/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password, role })
-    });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Login failed");
+      
+      console.log("🔍 LOGIN RESPONSE:", data);
+      return data; 
+    } catch (error) {
+      throw new Error(error.message === "Failed to fetch" 
+        ? "Backend server is not responding (Check port 3000)" 
+        : error.message);
+    }
+  },
 
+  // ---------------- GET CURRENT USER ----------------
+  getCurrentUser: async (token) => {
+    try {
+      const res = await fetch(`${API_URL}/api/users/me`, { // Fixed path: usually under /api/users/me
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to fetch user");
+      return data;
+    } catch (error) {
+      throw new Error("Session expired or server unreachable");
+    }
   },
 
   // ---------------- LOGOUT ----------------
   logout: async () => {
-
-    await request("/api/users/logout", {
-      method: "POST"
-    });
-
-    return true;
-
+    try {
+      await fetch(`${API_URL}/api/users/logout`, { method: "POST" });
+    } catch (e) {
+      console.error("Logout request failed, but clearing local session anyway.");
+    }
   },
-
-  // ---------------- GET CURRENT USER ----------------
-  getCurrentUser: async () => {
-
-    return request("/api/users/me", {
-      method: "GET"
-    });
-
-  }
-
 };
